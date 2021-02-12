@@ -1,22 +1,24 @@
-const express = require("express");
-const shortId = require("shortid");
+const express = require('express')
+const shortId = require('shortid')
 
-const router = express.Router();
+const router = express.Router()
 
-router.post("/shorten", (req, res) => {
-  let randomUrl = shortId.generate();
-  console.log(req.body.url);
-  res.send(randomUrl);
+const url_db = require('../db/url_db')
+
+router.post('/shorten', async (req, res) => {
+  const randomUrl = shortId.generate()
+  const realUrl = req.body.url
   //เอา randomUrl = shortenUrl กับ req.body.url = fullUrl ไปเก็บใน DB
-});
+  await url_db.create(randomUrl, realUrl)
+  res.send(randomUrl)
+})
 
-router.get("/:id", (req, res) => {
-  console.log(req.params.id);
-  //   เอา id ไปหาใน db
-  // const shortUrl = await
-  //   if(shortUrl == null) return res.sendStatus(404)
+router.get('/shorten/:shorten_url', async (req, res) => {
+  //   เอา shorten_url ไปหาใน db
+  const response = await url_db.find(req.params.shorten_url)
+  if (!response) return res.sendStatus(404)
   // เอา fullUrl เต็มๆใส่ใน redirect
-  //   res.redirect()
-});
+  res.send(response.url)
+})
 
-module.exports = router;
+module.exports = router
