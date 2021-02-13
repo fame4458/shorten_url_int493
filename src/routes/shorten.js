@@ -18,7 +18,7 @@ router.get('/shorten/:shorten_url', async (req, res) => {
   const response = await url_db.find(req.params.shorten_url)
   if (!response) return res.sendStatus(404)
   // เอา fullUrl เต็มๆใส่ใน redirect
-  res.send(response.url)
+  res.redirect(response.url)
 })
 
 module.exports = router
