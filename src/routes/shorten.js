@@ -10,7 +10,7 @@ router.post('/shorten', async (req, res) => {
   const realUrl = req.body.url
   //เอา randomUrl = shortenUrl กับ req.body.url = fullUrl ไปเก็บใน DB
   await url_db.create(randomUrl, realUrl)
-  res.send(randomUrl)
+  res.send(`http://shotern.a4.tnpl.me:8000/shorten/${randomUrl}`)
 })
 
 router.get('/shorten/:shorten_url', async (req, res) => {
