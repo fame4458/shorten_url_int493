@@ -13,7 +13,7 @@ router.post('/shorten', async (req, res) => {
   const data = {
     link:`http://shotern.a4.tnpl.me:8000/shorten/${randomUrl}`
   }
-  res.send(data)
+  res.json(data)
 })
 
 router.get('/shorten/:shorten_url', async (req, res) => {
