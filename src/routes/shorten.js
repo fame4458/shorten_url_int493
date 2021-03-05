@@ -22,6 +22,8 @@ router.get("/shorten/:shorten_url", async (req, res) => {
   if (!response) return res.sendStatus(404);
   // เอา fullUrl เต็มๆใส่ใน redirect
 
+  //func update visit here
+  
   res.redirect(response.url);
 });
 
