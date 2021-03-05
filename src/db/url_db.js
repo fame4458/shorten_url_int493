@@ -6,7 +6,7 @@ module.exports = {
   async create(shorten, url, visit) {
     try {
       const { rows } = await db.query(sql`
-      INSERT INTO urls (id,shorten_url, url)
+      INSERT INTO urls (id,shorten_url, url, visit)
         VALUES (${uuidv4()}, ${shorten}, ${url}, ${visit})
         RETURNING shorten_url, url, visit;
       `)
@@ -16,6 +16,17 @@ module.exports = {
         return null
       }
 
+      throw error
+    }
+  },
+  async update(shorten) {
+    console.log(shorten)
+    try {
+      const { rows } = await db.query(sql`
+      UPDATE urls SET visit = ${shorten.visit + 1} WHERE id=${
+        shorten.id
+      };`)
+    } catch (error) {
       throw error
     }
   },
