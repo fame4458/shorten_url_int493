@@ -3,12 +3,12 @@ const { v4: uuidv4 } = require('uuid')
 const db = require('./db')
 
 module.exports = {
-  async create(shorten, url) {
+  async create(shorten, url, visit) {
     try {
       const { rows } = await db.query(sql`
       INSERT INTO urls (id,shorten_url, url)
-        VALUES (${uuidv4()}, ${shorten}, ${url})
-        RETURNING shorten_url, url;
+        VALUES (${uuidv4()}, ${shorten}, ${url}, ${visit})
+        RETURNING shorten_url, url, visit;
       `)
       return rows
     } catch (error) {
