@@ -23,7 +23,7 @@ module.exports = {
     console.log(shorten)
     try {
       const { rows } = await db.query(sql`
-      UPDATE urls SET visit = ${shorten.visit + 1} WHERE id=${
+      UPDATE urls SET visit = visit + 1 WHERE id=${
         shorten.id
       };`)
     } catch (error) {
