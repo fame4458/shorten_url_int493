@@ -5,13 +5,13 @@ const router = express.Router()
 
 const url_db = require('../db/url_db')
 
-router.post('/shorten', async (req, res) => {
+router.post('/link', async (req, res) => {
   const randomUrl = shortId.generate()
   const realUrl = req.body.url
   //เอา randomUrl = shortenUrl กับ req.body.url = fullUrl ไปเก็บใน DB
   await url_db.create(randomUrl, realUrl, 0)
   const data = {
-    link: `http://shotern.a4.tnpl.me:8000/shorten/${randomUrl}`,
+    link: `http://lb.shotern.a4.tnpl.me:8000/shorten/${randomUrl}`,
   }
   res.json(data)
 })
