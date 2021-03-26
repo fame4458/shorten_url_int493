@@ -36,4 +36,10 @@ module.exports = {
     `)
     return rows[0]
   },
+  async findGenerateUrl(url) {
+    const { rows } = await db.query(sql`
+    SELECT * FROM urls WHERE url=${url} LIMIT 1;
+    `)
+    return rows[0]
+  },
 }
