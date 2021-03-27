@@ -8,7 +8,7 @@ const url_db = require("../db/url_db");
 router.post("/link", async (req, res) => {
   const realUrl = req.body.url;
 
-  let resposne = await url_db.findGenerateUrl(realUrl);
+  let response = await url_db.findGenerateUrl(realUrl);
   if (!response) {
     const randomUrl = shortId.generate();
     await url_db.create(randomUrl, realUrl, 0);
@@ -18,7 +18,7 @@ router.post("/link", async (req, res) => {
     res.json(data);
   }else{
     const data = {
-      link: `http://lb.shortern.a4.tnpl.me:8000/shorten/${resposne.shorten_url}`,
+      link: `http://lb.shortern.a4.tnpl.me:8000/shorten/${response.shorten_url}`,
     };
     res.json(data)
   }
