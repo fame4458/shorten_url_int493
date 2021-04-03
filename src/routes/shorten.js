@@ -72,7 +72,7 @@ router.get('/shorten/:shorten_url', async (req, res) => {
   return
 })
 
-router.get('/l/:shorten_url/stats', async (req, res) => {
+router.get('/:shorten_url/stats', async (req, res) => {
   const message = await redis.get(req.params.shorten_url).catch((err) => {
     if (err) console.error(err)
   })
