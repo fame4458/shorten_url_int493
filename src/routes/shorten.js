@@ -18,22 +18,14 @@ router.post('/link', async (req, res) => {
     return
   }
   // let response = await url_db.findGenerateUrl(realUrl)
-  let response = false
-  if (!response) {
-    const randomUrl = shortId.generate()
-    // await url_db.create(randomUrl, realUrl, 0)
-    data = {
-      link: `http://lb.shortern.a4.tnpl.me:8000/shorten/${randomUrl}`,
-      randomUrl: randomUrl,
-      visit: 0,
-    }
-  } else {
-    data = {
-      link: `http://lb.shortern.a4.tnpl.me:8000/shorten/${response.shorten_url}`,
-      randomUrl: response.shorten_url,
-      visit: response.visit,
-    }
+  // await url_db.create(randomUrl, realUrl, 0)
+  const randomUrl = shortId.generate()
+  data = {
+    link: `http://lb.shortern.a4.tnpl.me:8000/shorten/${randomUrl}`,
+    randomUrl: randomUrl,
+    visit: 0,
   }
+
   await redis.set(
     data.randomUrl,
     `{ "realUrl":"${realUrl}", "visit": "${data.visit}" }`
