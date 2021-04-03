@@ -4,7 +4,7 @@ const redis = require('redis')
 const { promisify } = require('util')
 
 let client = redis.createClient({
-  host: 'redis',
+  host: process.env.REDIS,
   password: 'sOmE_sEcUrE_pAsS',
 })
 
