@@ -31,3 +31,14 @@ services:
       - postgres
     ports:
       - 8080:8080
+
+  redis:
+    image: "redis:alpine"
+
+    command: redis-server --requirepass sOmE_sEcUrE_pAsS
+
+    ports:
+     - "6379:6379"
+
+    environment:
+      REDIS_REPLICATION_MOD: master
