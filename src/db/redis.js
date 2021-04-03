@@ -18,10 +18,10 @@ client.on('error', (error) => {
 
 const get = promisify(client.get).bind(client)
 const set = promisify(client.set).bind(client)
-const getList = promisify(client.lrange).bind(client)
+const incr = promisify(client.incr).bind(client)
 
 module.exports = {
   get,
   set,
-  getList,
+  incr,
 }

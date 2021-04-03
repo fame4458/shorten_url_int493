@@ -17,10 +17,11 @@ router.post('/link', async (req, res) => {
     res.json(data)
     return
   }
-  let response = await url_db.findGenerateUrl(realUrl)
+  // let response = await url_db.findGenerateUrl(realUrl)
+  let response = false
   if (!response) {
     const randomUrl = shortId.generate()
-    await url_db.create(randomUrl, realUrl, 0)
+    // await url_db.create(randomUrl, realUrl, 0)
     data = {
       link: `http://lb.shortern.a4.tnpl.me:8000/shorten/${randomUrl}`,
       randomUrl: randomUrl,
@@ -37,6 +38,7 @@ router.post('/link', async (req, res) => {
     data.randomUrl,
     `{ "realUrl":"${realUrl}", "visit": "${data.visit}" }`
   )
+  await redis.set(`${data.randomUrl}_visit`, data.visit)
   await redis.set(realUrl, data.link)
 
   res.json(data)
@@ -48,12 +50,10 @@ router.get('/shorten/:shorten_url', async (req, res) => {
   const message = await redis.get(shorten_url).catch((err) => {
     if (err) console.error(err)
   })
+  console.log(message)
   if (message) {
     var obj = JSON.parse(message)
-    await redis.set(
-      shorten_url,
-      `{ "realUrl":"${obj.realUrl}", "visit": "${parseInt(obj.visit) + 1}" }`
-    )
+    redis.incr(`${shorten_url}_visit`)
     res.redirect(obj.realUrl)
     return
   }
@@ -68,18 +68,19 @@ router.get('/shorten/:shorten_url', async (req, res) => {
   //   return res.sendStatus(500)
   // }
 
-  res.redirect(response.url)
+  // res.redirect(response.url)
   return
 })
 
 router.get('/shorten/:shorten_url/stats', async (req, res) => {
-  const message = await redis.get(req.params.shorten_url).catch((err) => {
-    if (err) console.error(err)
-  })
-  if (message) {
-    var obj = JSON.parse(message)
+  const visit = await redis
+    .get(`${req.params.shorten_url}_visit`)
+    .catch((err) => {
+      if (err) console.error(err)
+    })
+  if (visit) {
     const data = {
-      visit: parseInt(obj.visit),
+      visit: parseInt(visit),
     }
 
     res.json(data)
