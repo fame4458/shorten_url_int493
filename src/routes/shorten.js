@@ -26,12 +26,12 @@ router.post('/link', async (req, res) => {
     visit: 0,
   }
 
-  redis.set(
+  await redis.set(
     data.randomUrl,
     `{ "realUrl":"${realUrl}", "visit": "${data.visit}" }`
   )
-  redis.set(`${data.randomUrl}_visit`, data.visit)
-  redis.set(realUrl, data.link)
+  await redis.set(`${data.randomUrl}_visit`, data.visit)
+  await redis.set(realUrl, data.link)
 
   res.json(data)
   return
